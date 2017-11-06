@@ -1,5 +1,6 @@
 import sqlite3
 import random
+import datetime
 
 connection = None
 cursor = None
@@ -12,6 +13,13 @@ def connect(path):
     cursor.execute(' PRAGMA forteign_keys=ON; ')
     connection.commit()
     return
+
+def validate(date_text, valid):
+    try:
+        datetime.datetime.strptime(date_text, '%Y-%m-%d')
+
+    except ValueError:
+        raise ValueError("Incorrect data format, should be YYYY-MM-DD")
 
 
 
@@ -114,7 +122,55 @@ def agentsF():
             if (row == trackingNumber):
                 cursor.execute() #placeholder
                 rows = cursor.fetchall()
-                print rows
+                print(rows)
+                editOrder = raw_input("Would you like to edit an order? (yes/no)")
+                if (editOrder == yes):
+                    orderNumber = input("Please enter the order number")
+                    cursor.execute()  # placeholder
+                    row = cursor.fetchone(0)
+                    if (row == orderNumber):
+                        while (orderInput != 4):
+                            print("1 : Update pickup time"
+                                  "2 : Update drop off time"
+                                  "3 : Remove order"
+                                  "4 : Back")
+                            cursor.execute()  # placeholder
+                            row = cursor.fetchone(0)
+                            print (row)
+                            orderInput = input("Please type in the corresponding number")
+
+                            if (orderInput == 1):
+                                while True:
+                                    newTime = raw_input("Please enter a new pickup time")
+                                    try:
+                                        datetime.datetime.strptime(newTime, '%Y-%m-%d')
+                                        cursor.execute()  # placeholder
+                                        print("Pick up time updated")
+                                        break
+
+                                    except ValueError:
+                                        raise ValueError("Incorrect data format, should be YYYY-MM-DD")
+
+                            if (orderInput == 2):
+                                while True:
+                                    newTime = raw_input("Please enter a new drop off time")
+                                    try:
+                                        datetime.datetime.strptime(newTime, '%Y-%m-%d')
+                                        cursor.execute()  # placeholder
+                                        print("Drop off time updated")
+                                        break
+
+                                    except ValueError:
+                                        raise ValueError("Incorrect data format, should be YYYY-MM-DD")
+
+                            if (orderInput == 3):
+                                cursor.execute()  # placeholder
+                                print("Order removed\n")
+
+                            if (agentInput == 4):
+                                quit()
+
+
 
             else:
                 print("not a valid input\n")
