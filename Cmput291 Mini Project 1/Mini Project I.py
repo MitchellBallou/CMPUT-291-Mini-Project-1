@@ -212,9 +212,10 @@ def agentsF():
 
 def customersF(cid):
     global connection, cursor
+    basket = []
+    unavailable = []
 
     while (customerInput != 4):
-        basket = []
         print("1 : Search for products"
               "2 : Place an order"
               "3 : List orders"
@@ -226,8 +227,19 @@ def customersF(cid):
 
         if (customerInput == 2):
             print("Place an order\n")
+            if not basket:
+                print("Basket is empty")
+                continue
             cursor.execute() #placeholder search to verify that all items in the basket are available
-            for (i in unavailable):
+            rows = cursor.fetchall()
+            for i in rows:
+                unavailable.append(i)
+            if not unavailable:
+                cursor.execute() #placeholder place whole basket into database
+                print("All items in basket are ordered")
+                continue
+
+            for i in unavailable[i][0]:
                 row = cursor.fetchrow(i)
                 print("Product " + row + " is unavailable\n")
                 print("1 : change quantity"
@@ -252,15 +264,12 @@ def customersF(cid):
                         except TypeError:
                             raise TypeError("Incorrect data format, please enter an integer")
 
-
-
-
                 if (changeProduct == 2):
                     while product in basket: basket.remove(product)
 
 
             cursor.execute() #place holder put items from the basket into database as orders'
-            print("All items in basket")
+            print("All items in basket are ordered")
 
 
         if (customerInput == 3):
