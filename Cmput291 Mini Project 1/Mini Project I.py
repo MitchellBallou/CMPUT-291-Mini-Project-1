@@ -106,6 +106,19 @@ def agentsF():
                 addOrder = raw_input("Would you like to add a delivery to this order? (yes/no): ")
                 if (addOrder == "yes"):
                     oid = input("Please enter an oid that you want to add to this delivery")
+                    while True:
+                        pickUp = raw_input("Please enter the pickup date or leave it blank")
+                        try:
+                            if (pickUp == ()):
+                                print("No pick up time entered\n")
+                                break
+                            if (datetime.datetime.strptime(pickUp, '%Y-%m-%d'))
+                                print("Pick up time updated\n")
+                                break
+
+                        except ValueError:
+                            raise ValueError("Incorrect data format, should be YYYY-MM-DD")
+                        
                     pickUp = raw_input("Please enter the pickup date or leave it blank")
                     newDelivery = () #placeholder
                     cursor.execute(newDelivery)
