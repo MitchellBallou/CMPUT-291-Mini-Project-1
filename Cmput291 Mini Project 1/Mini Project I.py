@@ -118,7 +118,7 @@ def agentsF():
 
                         except ValueError:
                             raise ValueError("Incorrect data format, should be YYYY-MM-DD")
-                        
+
                     pickUp = raw_input("Please enter the pickup date or leave it blank")
                     newDelivery = () #placeholder
                     cursor.execute(newDelivery)
@@ -214,11 +214,54 @@ def customersF(cid):
     global connection, cursor
 
     while (customerInput != 4):
+        basket = []
         print("1 : Search for products"
               "2 : Place an order"
               "3 : List orders"
               "4 : Logout")
         customerInput = input("Please type in the corresponding number")
+        if (customerInput == 1):
+            print("Search for products\n")
+            print("Please enter product keywords\n")
+
+        if (customerInput == 2):
+            print("Place an order\n")
+            cursor.execute() #placeholder search to verify that all items in the basket are available
+            for (i in unavailable):
+                row = cursor.fetchrow(i)
+                print("Product " + row + " is unavailable\n")
+                print("1 : change quantity"
+                      "2 : Remove product from basket")
+                changeProduct = input("Please type in the corresponding number")
+                if (changeProduct == 1):
+                    while True:
+                        try:
+                            newQuantity = input("Please enter a new quantity: ")
+                            newQuantity += 1
+                            newQuantity -= 1
+                            cursor.execute()#placeholder to ensure it's a viable number
+                            row = cursor.fetchone(0)
+                            if (row == ()):
+                                raise Exception("Not a viable quantity")
+
+                            if product in basket: basket.remove(product)
+                            product = (sid, pid, newQuantity)
+                            basket.append(product)
+                            break
+
+                        except TypeError:
+                            raise TypeError("Incorrect data format, please enter an integer")
+
+
+
+
+                if (changeProduct == 2):
+                    while product in basket: basket.remove(product)
+
+
+            cursor.execute() #place holder put items from the basket into database as orders'
+            print("All items in basket")
+
 
         if (customerInput == 3):
             print("List orders\n")
